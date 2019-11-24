@@ -5,6 +5,7 @@ const path = require('path');
 const { app, BrowserWindow, Menu } = electron;
 
 let mainWindow;
+let addWindow;
 
 //listen for app to be ready
 app.on('ready', () => {
@@ -17,86 +18,44 @@ app.on('ready', () => {
         slashes: true
     }));
 
-    if (process.platform === 'darwin') {
-        const template = [
-          {
-            label: 'To Do', 
-                submenu: [
-                {
-                    label: 'Add Item',
-                },
-                {
-                    label: 'Clear Item'
-                },
-                {
-                    label: 'Quit To Do',
-                    role: 'quit'
-                }
-                ],
-          },
-          {
-            label: 'Edit', submenu: [
-              { role: 'undo' },
-              { role: 'redo' },
-              { role: 'separator' },
-              { role: 'cut' },
-              { role: 'copy' },
-              { role: 'paste' },
-              { role: 'pasteandmatchstyle' },
-              { role: 'delete' },
-              { role: 'selectall' },
-            ],
-          },
-          {
-            label: 'Help', submenu: [
-              { role: 'reload' },
-              { role: 'toggleDevTools' },
-            ],
-          },
-        ];
-        template.unshift({label: '', role: 'To Do'});
-        Menu.setApplicationMenu(Menu.buildFromTemplate(template));
-      } else {
-        const template = [
-            {
-                label: 'File', 
-                    submenu: [
-                    {
-                        label: 'Add Item',
-                    },
-                    {
-                        label: 'Clear Item'
-                    },
-                    {
-                        label: 'Quit To Do',
-                        role: 'quit',
-                        accelerator: 'Ctrl+Shift+Q'
-                    }
-                    ],
-              },
-            {
-              label: 'Edit', submenu: [
-                { role: 'undo' },
-                { role: 'redo' },
-                { role: 'separator' },
-                { role: 'cut' },
-                { role: 'copy' },
-                { role: 'paste' },
-                { role: 'pasteandmatchstyle' },
-                { role: 'delete' },
-                { role: 'selectall' },
-              ],
-            },
-            {
-              label: 'Help', submenu: [
-                { role: 'reload' },
-                { role: 'toggleDevTools' },
-              ],
-            },
-          ];
-          Menu.setApplicationMenu(Menu.buildFromTemplate(template));
-      }
+    if (process.platform === 'darwin') {menuTemplate.unshift({label: '', role: 'To Do'});}
+    Menu.setApplicationMenu(Menu.buildFromTemplate(menuTemplate));
 });
 
-//Create menu template
-// Mac App menu - used for styling so shortcuts work
+//handle createaddwindow
+
+function createAddWindow(){
+    addWindow = new BrowserWindow({
+        width: 300,
+        height: 200,
+        title: 'Add To Do Item'
+    });
+    //load html into window
+    addWindow.loadURL(url.format({
+        pathname: path.join(__dirname, 'addWindow.html'),
+        protocol: 'file:',
+        slashes: true
+    }));
+}
+
+//Menu Template
+const menuTemplate = [
+    {
+      label: 'To Do', 
+          submenu: [
+          {
+              label: 'Add Item',
+              click () {
+                  createAddWindow();
+              }
+          },
+          {
+              label: 'Clear Item'
+          },
+          {
+              label: 'Quit To Do',
+              role: 'quit'
+          }
+          ],
+    }
+  ];
