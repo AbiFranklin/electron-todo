@@ -1,0 +1,11 @@
+{
+  "name": "electron_todo",
+  "version": "1.0.0",
+  "description": "To Do Desktop App",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "Abigayle Franklin",
+  "license": "MIT"
+}
