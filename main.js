@@ -76,7 +76,11 @@ const menuTemplate = [
               accelerator: process.platform === 'darwin' ? 'Cmd+A' : 'Ctrl+A'
             },
           {
-              label: 'Clear Item'
+              label: 'Clear Item',
+              click() {
+                  mainWindow.webContents.send('item:clear')
+              },
+              accelerator: process.platform === 'darwin' ? 'Cmd+C' : 'Ctrl+C'
           },
           {
               label: 'Quit To Do',
