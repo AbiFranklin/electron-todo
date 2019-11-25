@@ -1,13 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>TO DO</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <title>To Do</title>
 </head>
 <body>
-    <h1>To Do</h1>
-    <hr/>
+    <nav>
+        <div class="nav-wrapper">
+            <a class="brand-logo center">To Do</a>
+        </div>
+    </nav>
     <ul>
     </ul>
+
+<style>
+    .collection-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+</style>
 
 <script>
     const electron = require('electron');
@@ -15,15 +27,39 @@
     const ul = document.querySelector('ul');
 
     ipcRenderer.on('item:add', function(e, item){
+        ul.classList = 'collection';
         const li = document.createElement('li');
+        li.className = 'collection-item';
+        const button = document.createElement('button');
+        button.innerText="X"
+        button.style.cssFloat = 'right'
+        button.className = 'btn-floating red waves-effect'
+        button.addEventListener('click', removeItem)
         const itemText = document.createTextNode(item);
         li.appendChild(itemText);
+        li.appendChild(button);
         ul.appendChild(li)
     })
 
     ipcRenderer.on('item:clear', ()=>{
         ul.innerHTML = '';
+        ul.className = ''
     })
+
+    ul.addEventListener('click', crossOutItem);
+
+    function crossOutItem(e){
+        e.target.style.textDecoration = 'line-through';
+    }
+
+    function removeItem(e){
+        e.target.parentNode.remove()
+
+        //remove line caused by collection styling if all items deleted
+        if (document.querySelectorAll('li').length === 0) {
+            ul.className = '';
+        }
+    }
 </script>
 </body>
 </html>

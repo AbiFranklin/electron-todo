@@ -4,6 +4,9 @@ const path = require('path');
 
 const { app, BrowserWindow, Menu, ipcMain } = electron;
 
+//Set Env
+process.env.NODE_ENV = 'production'
+
 let mainWindow;
 let addWindow;
 
@@ -11,6 +14,7 @@ let addWindow;
 app.on('ready', () => {
     //create new browser window
     mainWindow = new BrowserWindow({
+        width: 500,
         webPreferences: {
             nodeIntegration: true
         }
